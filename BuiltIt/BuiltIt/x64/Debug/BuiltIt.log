@@ -1,0 +1,40 @@
+﻿  stdafx.cpp
+  PoseEstimation.cpp
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\poseestimation.cpp(1): warning C4603: '_USE_MATH_DEFINES': macro is not defined or definition is different after precompiled header use
+  c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\poseestimation.cpp(1): note: Add macro to precompiled header instead of defining here
+  c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\poseestimation.cpp(3): note: use of precompiled header
+  MarkerTracker.cpp
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.h(14): warning C4099: 'CvMemStorage': type name first seen using 'struct' now seen using 'class'
+  d:\opencv\opencv0906\custom_build\install\include\opencv2\core\types_c.h(1190): note: see declaration of 'CvMemStorage'
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(151): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(152): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(179): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(180): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(257): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(258): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(330): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(331): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(451): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(452): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.cpp(460): warning C4244: 'argument': conversion from 'const double' to 'float', possible loss of data
+  Calibration.cpp
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(194): warning C4305: 'argument': truncation from 'int' to 'bool'
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(221): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(228): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(235): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(242): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\calibration.cpp(33): warning C4305: 'argument': truncation from 'double' to 'float'
+  BuiltIt.cpp
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(194): warning C4305: 'argument': truncation from 'int' to 'bool'
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(221): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(228): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(235): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\helperfunctions.h(242): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\markertracker.h(14): warning C4099: 'CvMemStorage': type name first seen using 'struct' now seen using 'class'
+  d:\opencv\opencv0906\custom_build\install\include\opencv2\core\types_c.h(1190): note: see declaration of 'CvMemStorage'
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\builtit.cpp(59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\builtit.cpp(60): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\calibration.cpp(86): warning C4172: returning address of local variable or temporary: markerImg
+  BuiltIt.vcxproj -> C:\Users\Andreas\documents\visual studio 2015\Projects\BuiltIt\x64\Debug\BuiltIt.exe
+  BuiltIt.vcxproj -> C:\Users\Andreas\documents\visual studio 2015\Projects\BuiltIt\x64\Debug\BuiltIt.pdb (Full PDB)

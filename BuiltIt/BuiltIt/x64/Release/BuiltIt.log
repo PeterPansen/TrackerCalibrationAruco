@@ -1,0 +1,14 @@
+﻿  BuiltIt.cpp
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\HelperFunctions.h(194): warning C4305: 'argument': truncation from 'int' to 'bool'
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\MarkerTracker.h(14): warning C4099: 'CvMemStorage': type name first seen using 'struct' now seen using 'class'
+  D:\OpenCV\OpenCV0906\custom_build\install\include\opencv2/core/types_c.h(1190): note: see declaration of 'CvMemStorage'
+  Calibration.cpp
+c:\users\andreas\documents\visual studio 2015\projects\builtit\builtit\HelperFunctions.h(194): warning C4305: 'argument': truncation from 'int' to 'bool'
+Calibration.cpp(33): warning C4305: 'argument': truncation from 'double' to 'float'
+  Generating code
+  14 of 725 functions ( 1.9%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  BuiltIt.vcxproj -> C:\Users\Andreas\documents\visual studio 2015\Projects\BuiltIt\x64\Release\BuiltIt.exe
+  BuiltIt.vcxproj -> C:\Users\Andreas\documents\visual studio 2015\Projects\BuiltIt\x64\Release\BuiltIt.pdb (Full PDB)
