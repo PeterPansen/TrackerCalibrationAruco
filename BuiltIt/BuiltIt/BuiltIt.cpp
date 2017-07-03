@@ -22,6 +22,8 @@ Ptr<aruco::DetectorParameters> detectorParams = aruco::DetectorParameters::creat
 
 
 
+
+
 vector<vector<Point2f>> cornerPoints_c1, cornerPoints_c2 = { {} };
 vector<vector<Point2f>> rejectedCandidates_c1, rejectedCandidates_c2 = { {} };
 vector<int> markerIDs_c1, markerIDs_c2;
@@ -60,18 +62,18 @@ HelperFunctions::Pose fetchPoseBetween2Cameras(Vec3d tv1, Vec3d tv2, Vec3d rv1, 
 	Vec4d rv1Quat = HelperFunctions::matrixIntoQuaternions(rv1Matrix.at<double>(0, 0), rv1Matrix.at<double>(0, 1), rv1Matrix.at<double>(0, 2), rv1Matrix.at<double>(1, 0), rv1Matrix.at<double>(1, 1), rv1Matrix.at<double>(1, 2), rv1Matrix.at<double>(2, 0), rv1Matrix.at<double>(2, 1), rv1Matrix.at<double>(2, 2));
 	Vec4d rv2Quat = HelperFunctions::matrixIntoQuaternions(rv2Matrix.at<double>(0, 0), rv2Matrix.at<double>(0, 1), rv2Matrix.at<double>(0, 2), rv2Matrix.at<double>(1, 0), rv2Matrix.at<double>(1, 1), rv2Matrix.at<double>(1, 2), rv2Matrix.at<double>(2, 0), rv2Matrix.at<double>(2, 1), rv2Matrix.at<double>(2, 2));
 
-	cout << "Cam1 to Marker: " << tv1 << endl;
-	cout << "Cam2 to Marker: " << tv2 << endl;
+	//cout << "Cam1 to Marker: " << tv1 << endl;
+	//cout << "Cam2 to Marker: " << tv2 << endl;
 
 
 	//Inversing the left side with Cam1 to Marker
 
-	cout << "Cam1 To Marker: R:" << rv1Quat << " :T: " << tv1 << endl;
+	//cout << "Cam1 To Marker: R:" << rv1Quat << " :T: " << tv1 << endl;
 
 	Vec4d rv1_Inverse = HelperFunctions::inverse(rv1Quat);
 	Vec3d tv1_Inverse = -(HelperFunctions::mul(rv1_Inverse, tv1));
 
-	cout << "InverseResult: R:" << rv1_Inverse << " :T: " << tv1_Inverse << endl;
+	//cout << "InverseResult: R:" << rv1_Inverse << " :T: " << tv1_Inverse << endl;
 
 	//Here I inverted Camera1 To Marker to now read Marker to Camera1
 	HelperFunctions::Pose markerToC1;
@@ -83,11 +85,11 @@ HelperFunctions::Pose fetchPoseBetween2Cameras(Vec3d tv1, Vec3d tv2, Vec3d rv1, 
 
 	C2ToC1.quatRot = rv2Quat * markerToC1.quatRot;
 
-	cout << endl << "Resulting translation is " << rv2Quat << " * " << markerToC1.trans << endl << "And all that finally added to " << tv2 << endl;
+	//cout << endl << "Resulting translation is " << rv2Quat << " * " << markerToC1.trans << endl << "And all that finally added to " << tv2 << endl;
 
 	C2ToC1.trans = (HelperFunctions::mul(rv2Quat, markerToC1.trans)) + tv2;
 
-	cout << "Result: " << C2ToC1.trans << endl << endl;;
+	//cout << "Result: " << C2ToC1.trans << endl << endl;;
 
 	return C2ToC1;
 }
@@ -97,6 +99,8 @@ int main()
 {
 	namedWindow("ColorImage_C1", CV_WINDOW_NORMAL);
 	namedWindow("ColorImage_C2", CV_WINDOW_NORMAL);
+
+	detectorParams->cornerRefinementMethod = aruco::CornerRefineMethod::CORNER_REFINE_SUBPIX;
 
 	VideoCapture cap_1, cap_2;
 	cap_1.open(0);
@@ -205,6 +209,12 @@ int main()
 				circle(img_markers_c1, Point2d(reproj1[0], reproj1[1]), 10, Scalar(255, 0, 0), -1);
 				Vec3d reproj2 = HelperFunctions::reprojectToImagePoint(cameraMatrix_c1, C1ToMarkerViaC2.trans);
 				circle(img_markers_c1, Point2d(reproj2[0], reproj2[1]), 10, Scalar(0, 0, 255), -1);
+
+				Vec2d rPic1 = Vec2d(reproj1[0], reproj1[1]);
+				Vec2d rPic2 = Vec2d(reproj2[0], reproj2[1]);
+
+				cout << "ResultOffset: " << HelperFunctions::calculateEuclideanDistance(rPic1, rPic2) << endl;
+
 			}
 		}
 

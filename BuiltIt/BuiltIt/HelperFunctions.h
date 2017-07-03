@@ -297,4 +297,10 @@ public:
 
 		return rv1Quat;
 	}
+
+	static double calculateEuclideanDistance(Vec2d a, Vec2d b)
+	{
+		cout << "Incoming: " << a << " " << b << endl;
+		return sqrt(pow((a[0] - b[0]),2) + pow((a[1] - b[1]),2));
+	}
 };
