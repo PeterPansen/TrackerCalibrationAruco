@@ -3,6 +3,19 @@
 
 #include <opencv2\core.hpp>
 #include <opencv2\highgui.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+
+#include <opencv2\aruco.hpp>
+#include <opencv2\aruco\charuco.hpp>
+#include <opencv2\imgproc.hpp>
+
+#include<fstream>
+#include <vector>
+
+#include "stdafx.h"
+
+#include <opencv2\core.hpp>
+#include <opencv2\highgui.hpp>
 
 #include <opencv2\aruco.hpp>
 #include <opencv2\aruco\charuco.hpp>
@@ -16,11 +29,16 @@ using namespace std;
 
 #include <iostream>
 
-class HelperFunctions 
+class HelperFunctions
 {
 public:
+	struct Pose
+	{
+		Vec3d trans;
+		Vec4d quatRot;
+	};
 	/*
-		Saves a given matrix in a specified filePath. Remember to add the file extension to the filePath
+	Saves a given matrix in a specified filePath. Remember to add the file extension to the filePath
 	*/
 	static void saveToFile(Mat m, string filePath)
 	{
@@ -38,7 +56,7 @@ public:
 		}
 	}
 	/*
-		Loads a matrix from any specified file. Remember to specify the amount of rows and columns used in the matrix
+	Loads a matrix from any specified file. Remember to specify the amount of rows and columns used in the matrix
 	*/
 	static Mat loadFromFile(string filePath, int rows, int cols)
 	{
@@ -60,8 +78,8 @@ public:
 	}
 
 	/*
-		Converts a Vector3 from Euler-Angles to a Quaternion, represented as a Vec4d
-		ATTENTION: Requires Radiants instead of Angles
+	Converts a Vector3 from Euler-Angles to a Quaternion, represented as a Vec4d
+	ATTENTION: Requires Radiants instead of Angles
 	*/
 	static Vec4d toQuaternion(double rollX, double pitchY, double yawZ)
 	{
@@ -83,8 +101,8 @@ public:
 	}
 
 	/* Converts a given Vector3 - Rotation - In Euler Angles to a real quaternion.
-		ATTENTION!!!!! Requires Radiants to work!!!!
-		Also: This will return a left-handed system, meaning the z-Axis will be negated
+	ATTENTION!!!!! Requires Radiants to work!!!!
+	Also: This will return a left-handed system, meaning the z-Axis will be negated
 	*/
 	static Vec4d toQuaternionUbi(Vec3d input)//double x, double y, double z) 
 	{
@@ -100,7 +118,7 @@ public:
 		double s3 = sin(z / 2);
 		double c1c2 = c1*c2;
 		double s1s2 = s1*s2;
-		
+
 		double a = c1c2*c3 - s1s2*s3;
 		double b = c1c2*s3 + s1s2*c3;
 		double c = s1*c2*c3 + c1*s2*s3;
@@ -115,7 +133,7 @@ public:
 		return res;
 	}
 
-	static Vec3d degreeToRadians(Vec3d input) 
+	static Vec3d degreeToRadians(Vec3d input)
 	{
 		Vec3d res;
 
@@ -126,7 +144,7 @@ public:
 		return res;
 	}
 
-	static Vec3d radiansToDegree(Vec3d input) 
+	static Vec3d radiansToDegree(Vec3d input)
 	{
 		Vec3d res;
 
@@ -139,7 +157,7 @@ public:
 	}
 
 	/*
-		Multiply a given Quaternion with a vector3. This runs down to rotating the vector by this quaternion
+	Multiply a given Quaternion with a vector3. This runs down to rotating the vector by this quaternion
 	*/
 	static Vec3d mul(Vec4d quat, Vec3d vec)
 	{
@@ -170,7 +188,7 @@ public:
 
 
 
-	static Vec4d inverse(Vec4d& ov) 
+	static Vec4d inverse(Vec4d& ov)
 	{
 		ov.val[0] = -ov.val[0];
 		ov.val[1] = -ov.val[1];
@@ -210,42 +228,73 @@ public:
 	}
 
 	/*
-		Converts any given rotation matrix to quaternion
+	Converts any given rotation matrix to quaternion
 	*/
 	static Vec4d matrixIntoQuaternions(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22)
 	{
 		double tr = m00 + m11 + m22;
 		double qx, qy, qz, qw;
 
-			if (tr > 0) {
-				double S = sqrt(tr + 1.0) * 2; // S=4*qw 
-				qw = 0.25 * S;
-				qx = (m21 - m12) / S;
-				qy = (m02 - m20) / S;
-				qz = (m10 - m01) / S;
-			}
-			else if ((m00 > m11)&(m00 > m22)) {
-				double S = sqrt(1.0 + m00 - m11 - m22) * 2; // S=4*qx 
-				qw = (m21 - m12) / S;
-				qx = 0.25 * S;
-				qy = (m01 + m10) / S;
-				qz = (m02 + m20) / S;
-			}
-			else if (m11 > m22) {
-				double S = sqrt(1.0 + m11 - m00 - m22) * 2; // S=4*qy
-				qw = (m02 - m20) / S;
-				qx = (m01 + m10) / S;
-				qy = 0.25 * S;
-				qz = (m12 + m21) / S;
-			}
-			else {
-				double S = sqrt(1.0 + m22 - m00 - m11) * 2; // S=4*qz
-				qw = (m10 - m01) / S;
-				qx = (m02 + m20) / S;
-				qy = (m12 + m21) / S;
-				qz = 0.25 * S;
-			}
+		if (tr > 0) {
+			double S = sqrt(tr + 1.0) * 2; // S=4*qw 
+			qw = 0.25 * S;
+			qx = (m21 - m12) / S;
+			qy = (m02 - m20) / S;
+			qz = (m10 - m01) / S;
+		}
+		else if ((m00 > m11)&(m00 > m22)) {
+			double S = sqrt(1.0 + m00 - m11 - m22) * 2; // S=4*qx 
+			qw = (m21 - m12) / S;
+			qx = 0.25 * S;
+			qy = (m01 + m10) / S;
+			qz = (m02 + m20) / S;
+		}
+		else if (m11 > m22) {
+			double S = sqrt(1.0 + m11 - m00 - m22) * 2; // S=4*qy
+			qw = (m02 - m20) / S;
+			qx = (m01 + m10) / S;
+			qy = 0.25 * S;
+			qz = (m12 + m21) / S;
+		}
+		else {
+			double S = sqrt(1.0 + m22 - m00 - m11) * 2; // S=4*qz
+			qw = (m10 - m01) / S;
+			qx = (m02 + m20) / S;
+			qy = (m12 + m21) / S;
+			qz = 0.25 * S;
+		}
 
-			return Vec4d(qx, qy, qz, qw);
+		return Vec4d(qx, qy, qz, qw);
+	}
+
+	static Pose poseMul(Pose firstP, Pose secondP)
+	{
+		Pose res;
+
+		res.quatRot = firstP.quatRot * secondP.quatRot;
+		res.trans = (HelperFunctions::mul(firstP.quatRot, secondP.trans)) + firstP.trans;
+
+		return res;
+	}
+
+	static Pose invertPose(Pose original)
+	{
+		Pose result;
+
+		result.quatRot = HelperFunctions::inverse(original.quatRot);
+		result.trans = -(HelperFunctions::mul(result.quatRot, result.trans));
+
+		return result;
+	}
+
+	static Vec4d rotationVectorToQuaternion(Vec3d rot)
+	{
+		Mat rv1Matrix;
+
+		cv::Rodrigues(rot, rv1Matrix);
+
+		Vec4d rv1Quat = HelperFunctions::matrixIntoQuaternions(rv1Matrix.at<double>(0, 0), rv1Matrix.at<double>(0, 1), rv1Matrix.at<double>(0, 2), rv1Matrix.at<double>(1, 0), rv1Matrix.at<double>(1, 1), rv1Matrix.at<double>(1, 2), rv1Matrix.at<double>(2, 0), rv1Matrix.at<double>(2, 1), rv1Matrix.at<double>(2, 2));
+
+		return rv1Quat;
 	}
 };

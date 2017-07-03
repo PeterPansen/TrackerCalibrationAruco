@@ -21,9 +21,4 @@ using namespace std;
 class BuiltIt
 {
 public:
-	struct Pose 
-	{
-		Vec3d trans;
-		Vec4d quatRot;
-	};
 };
